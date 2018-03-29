@@ -58,13 +58,13 @@ public class Assignment3 extends JDBCSubmission {
         try
         {
             PreparedStatement presidentStat= conn.prepareStatement(
-                "Select politican_president.id,party.name,politican_president.start_date
-                from politician_president.id join party
-                on politician_president.party_id=party.id 
-                join country on country.id=politician_president.country_id
-                where country.name="+"\'"+countryName+"\'"+
-                "order by politician_president.start_date desc;
-                ");
+                "Select politican_president.id,party.name,politican_president.start_date"+
+                "from politician_president.id join party"+
+                "on politician_president.party_id=party.id"+ 
+                "join country on country.id=politician_president.country_id"+
+                "where country.name="+"\'"+countryName+"\'"+
+                "order by politician_president.start_date desc;"
+                );
                 ResultSet presidents=presidentStat.executeQuery();
                 While(presidents.next()){
                     int currentPresident =presidents.getInt(1);
