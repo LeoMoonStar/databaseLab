@@ -52,15 +52,15 @@ public class Assignment3 extends JDBCSubmission {
     public ElectionResult presidentSequence(String countryName) {
            
       ElectionResult result =null;
-      List<Integer> presidentIds=new ArrayList<Integer>();
+      List<INT> presidentIds=new ArrayList<INT>();
       List<String> partyNames=new ArrayList<String>();
 
         try
         {
             PreparedStatement presidentStat= conn.prepareStatement(
-                "Select politican_president.id,party.name
+                "Select politican_president.id,party.name,politican_president.start_date
                 from politician_president.id join party
-                on politician_president.party_id=party.id
+                on politician_president.party_id=party.id 
                 join country on country.id=politician_president.country_id
                 where country.name="+"\'"+countryName+"\'"+
                 "order by politician_president.start_date desc;
@@ -89,16 +89,16 @@ public class Assignment3 extends JDBCSubmission {
 	}
 
     @Override
-    public List<Integer> findSimilarParties(Integer partyId, Float threshold) {
+    public List<INT> findSimilarParties(INT partyId, Float threshold) {
     //Write your code here.
-    List<Integer> similarParties= new ArrayList<Integer>();
+    List<INT> similarParties= new ArrayList<INT>();
     try{
         PreparedStatement getParties=conn.prepareStatement(
         " select id,description from party where id= "+
-        Integer.toString(partyId)+";");
+        INT.toString(partyId)+";");
 
         PreparedStatement comparedParty=conn.prepareStatement(
-            "select description from party where id = "+Integer.toString(partyId)+";"
+            "select description from party where id = "+INT.toString(partyId)+";"
         );
 
         ResultSet singleParty=comparedParty.executeQuery();
