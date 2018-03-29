@@ -1,3 +1,4 @@
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.IntData;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -19,35 +20,60 @@ public class Assignment3 extends JDBCSubmission {
     @Override
     public boolean connectDB(String url, String username, String password) {
         try{
-            conn=DriverManager.getConnection("jdbc::postgresql:localhost:5432/csc343h-yangjiaw","yangjiaw","");
+            conn=DriverManager.getConnection(url,username,password);
+            if(conn!=null){
             System.out.println("Congrats u have already connected with the database");
+            return true;
+        }
         }
             catch(Exception exc){
+                exc.printStackTrace();
                 System.out.println("Conncetion failed;");
+                return false;
           }
-        
-            
-        return true;
-
     }
 
     @Override
     public boolean disconnectDB() {
         try
         {
-            conn.close();
+            if (conn!=null)
+                conn.close();
+            if(conn.isClosed())
+                return true;
         }
         catch (SQLException e){
             System.out.println("can not close");
+            return false;
         }
-            return true;
     }
 
     @Override
     public ElectionResult presidentSequence(String countryName) {
            
+      ElectionResult result =null;
+      List<Integer> presidentIds=new ArrayList<Integer>();
+      List<String> partyNames=new ArrayList<String>();
+
         try
-        {Statement a1=conn.createStatement();}
+        {
+            PreparedStatement presidentStat= conn.prepareStatement(
+                "Select politican_president.id,party.name
+                from politician_president.id join party
+                on politician_president.party_id=party.id
+                join country on country.id=politician_president.country_id
+                where country.name="+"\'"+countryName+"\'"+
+                "order by politician_president.start_date desc;
+                ");
+                ResultSet presidents=presidentStat.executeQuery();
+                While(presidents.next()){
+                    int currentPresident =presidents.getInt(1);
+                    String currentParty=presidents.getString(2);
+                    presidentIds.add(currentPresident);
+                    partyNames.add(currentParty);
+                }
+                result = new ElectionResult(presidentIds,partyNames);
+        }
         catch (SQLException e){
             System.out.println("can not close");
         }
@@ -59,18 +85,45 @@ public class Assignment3 extends JDBCSubmission {
             create view Prisdent_country as:
             Select id ,country_id, party_id from politician_president 
             */
-            return null;
+            return result;
 	}
 
     @Override
     public List<Integer> findSimilarParties(Integer partyId, Float threshold) {
-	//Write your code here.
-        return null;
+    //Write your code here.
+    List<Integer> similarParties= new ArrayList<Integer>();
+    try{
+        PreparedStatement getParties=conn.prepareStatement(
+        " select id,description from party where id= "+
+        Integer.toString(partyId)+";");
+
+        PreparedStatement comparedParty=conn.prepareStatement(
+            "select description from party where id = "+Integer.toString(partyId)+";"
+        );
+
+        ResultSet singleParty=comparedParty.executeQuery();
+        singleParty.next();
+        String comparedDescription=singleParty.getString(1);
+        ResultSet allParties=getParties.executeQuery();
+        while(allParties.next()){
+            String currentDescription=allParties.getString(2);
+            int currentParty=allParties.getInt(1);
+            if((similarity(currentDescription,comparedDescription))>=threshold){
+                similarParties.add(currentParty);
+            }
+        }
+    }
+    catch(SQLException e){
+        e.printStackTrace();
+    }
+
+        return similarParties;
     }
 
     public static void main(String[] args) throws Exception {
    	    //Write code here. 
-	    System.out.println("Hellow World");
+        
+           System.out.println("Hellow World");
     }
 
 }
