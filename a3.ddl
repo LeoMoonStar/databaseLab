@@ -54,6 +54,6 @@ create table RENTALSTATION(
     Station_Code INT primary key,
     Name varchar(100),
     Address varchar(100),
-    Area Code varchar(100),
+    Area_Code varchar(100),
     City varchar(25)
 );
