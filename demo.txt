@@ -1,0 +1,121 @@
+csc343h-yangjiaw=> \i runner.txt 
+-- Loading schema and data:
+psql:schema.ddl:18: NOTICE:  drop cascades to 36 other objects
+DETAIL:  drop cascades to type carschema.res_status
+drop cascades to table carschema.customer
+drop cascades to table carschema.model
+drop cascades to table carschema.rentalstation
+drop cascades to table carschema.car
+drop cascades to table carschema.reservation
+drop cascades to table carschema.customer_res
+drop cascades to table carschema.q1
+drop cascades to view carschema.cust_res
+drop cascades to view carschema.completed
+drop cascades to view carschema.cancelled
+drop cascades to view carschema.cancel_ratio
+drop cascades to view carschema.all_cancel_ratio
+drop cascades to view carschema.cancel_with_rank
+drop cascades to view carschema.result1
+drop cascades to table carschema.q2
+drop cascades to view carschema.complete_res
+drop cascades to view carschema.single_res
+drop cascades to view carschema.multiple_res
+drop cascades to view carschema.multiple_count
+drop cascades to view carschema.multiple_rank
+drop cascades to view carschema.result2
+drop cascades to table carschema.q3
+drop cascades to view carschema.to_seventeen
+drop cascades to view carschema.num_models
+drop cascades to view carschema.popular_models
+drop cascades to view carschema.model_ranks
+drop cascades to view carschema.result3
+drop cascades to table carschema.q4
+drop cascades to view carschema.less_than30
+drop cascades to view carschema.less_thirty_res
+drop cascades to view carschema.all_changers
+drop cascades to view carschema.changes_with_month
+drop cascades to view carschema.recent_changes
+drop cascades to view carschema.customer_changes
+drop cascades to view carschema.result4
+DROP SCHEMA
+CREATE SCHEMA
+SET
+CREATE TYPE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+INSERT 0 16
+INSERT 0 8
+INSERT 0 9
+INSERT 0 28
+INSERT 0 38
+INSERT 0 46
+-- Query 1:
+SET
+psql:q1.sql:2: NOTICE:  table "q1" does not exist, skipping
+DROP TABLE
+CREATE TABLE
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+       email       | ratio 
+-------------------+-------
+ jj.swtz@mail.com  |     1
+ ma.smith@mail.com |     1
+(2 rows)
+
+-- Query 2:
+SET
+psql:q2.sql:2: NOTICE:  table "q2" does not exist, skipping
+DROP TABLE
+CREATE TABLE
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+     email      | num_shared_reservations 
+----------------+-------------------------
+ a.n@mail.com   |                       1
+ cyngu@mail.com |                       1
+(2 rows)
+
+-- Query 3:
+SET
+psql:q3.sql:2: NOTICE:  table "q3" does not exist, skipping
+DROP TABLE
+CREATE TABLE
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+  name  
+--------
+ BMW X5
+(1 row)
+
+-- Query 4:
+SET
+psql:q4.sql:2: NOTICE:  table "q4" does not exist, skipping
+DROP TABLE
+CREATE TABLE
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+CREATE VIEW
+   customer_email   
+--------------------
+ s.hilbert@mail.com
+(1 row)
