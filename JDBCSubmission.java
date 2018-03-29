@@ -9,9 +9,9 @@ public abstract class JDBCSubmission {
      * The return class for method electionSequence.
      */
     public static class ElectionResult implements Serializable {
-        public List<INT> presidents;
+        public List<Integer> presidents;
         public List<String> parties;
-        public ElectionResult(List<INT> presidents, List<String> parties) {
+        public ElectionResult(List<Integer> presidents, List<String> parties) {
             this.presidents = presidents;
             this.parties = parties;
         }
@@ -47,15 +47,15 @@ public abstract class JDBCSubmission {
         final java.util.regex.Pattern p = java.util.regex.Pattern.compile("\\s+");
         Set<?> left = p.splitAsStream(a).collect(java.util.stream.Collectors.toSet());
         Set<?> right = p.splitAsStream(b).collect(java.util.stream.Collectors.toSet());
-        final int sa = left.size();
-        final int sb = right.size();
+        final Integer sa = left.size();
+        final Integer sb = right.size();
         if ((sa - 1 | sb - 1) < 0)
             return 0.0;
         if ((sa + 1 & sb + 1) < 0)
             return 0.0;
         final Set<?> smaller = sa <= sb ? left : right;
         final Set<?> larger  = sa <= sb ? right : left;
-        int intersection = 0;
+        Integer intersection = 0;
         for (final Object element : smaller) try {
             if (larger.contains(element))
                 intersection++;
@@ -113,7 +113,7 @@ public abstract class JDBCSubmission {
      * @return                  a list of parties with Jaccard similarity of
      *                          descriptions above the given threshold
      */
-    public abstract List<INT> findSimilarParties(INT partyId, Float threshold);
+    public abstract List<Integer> findSimilarParties(Integer partyId, Float threshold);
 
 }
 

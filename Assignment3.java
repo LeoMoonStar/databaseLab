@@ -1,11 +1,9 @@
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.IntData;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
-import java.math.*;
 
 public class Assignment3 extends JDBCSubmission {
-    private Connection conn=null;
+    //private Connection connection=null;
 
     public Assignment3() throws ClassNotFoundException {
 
@@ -20,55 +18,61 @@ public class Assignment3 extends JDBCSubmission {
     @Override
     public boolean connectDB(String url, String username, String password) {
         try{
-            conn=DriverManager.getConnection(url,username,password);
-            if(conn!=null){
+            connection =DriverManager.getConnection(url,username,password);
+            if(connection!=null){
             System.out.println("Congrats u have already connected with the database");
             return true;
         }
         }
-            catch(Exception exc){
+            catch(SQLException exc){
                 exc.printStackTrace();
                 System.out.println("Conncetion failed;");
-                return false;
           }
+          return false;
     }
 
     @Override
     public boolean disconnectDB() {
         try
         {
-            if (conn!=null)
-                conn.close();
-            if(conn.isClosed())
+            if (connection!=null)
+                connection.close();
+            if(connection.isClosed())
                 return true;
         }
         catch (SQLException e){
             System.out.println("can not close");
-            return false;
+            
         }
+        return false;
     }
 
     @Override
     public ElectionResult presidentSequence(String countryName) {
            
       ElectionResult result =null;
-      List<INT> presidentIds=new ArrayList<INT>();
+      List<Integer> presidentIds=new ArrayList<Integer>();
       List<String> partyNames=new ArrayList<String>();
 
         try
         {
-            PreparedStatement presidentStat= conn.prepareStatement(
-                "Select politican_president.id,party.name,politican_president.start_date"+
-                "from politician_president.id join party"+
-                "on politician_president.party_id=party.id"+ 
-                "join country on country.id=politician_president.country_id"+
-                "where country.name="+"\'"+countryName+"\'"+
-                "order by politician_president.start_date desc;"
-                );
+            PreparedStatement presidentStat= connection.prepareStatement(
+                "SELECT politician_president.id, party.name " +
+                "from politician_president join party " +
+                "on politician_president.party_id = party.id join country " +
+                "on country.id = politician_president.country_id " +
+                "where country.name = " + "\'" + countryName + "\' " +
+                "order by politician_president.start_date desc;");
                 ResultSet presidents=presidentStat.executeQuery();
+                /*if(presidentIds!=null){
+                    Integer currentPresident =presidents.getInt(1);
+                    String currentParty=presidents.getString(2);
+                    presidentIds.add(currentPresident);
+                    partyNames.add(currentParty);
+                }*/
                 while(presidents.next())
                 {
-                    int currentPresident =presidents.getInt(1);
+                    Integer currentPresident =presidents.getInt(1);
                     String currentParty=presidents.getString(2);
                     presidentIds.add(currentPresident);
                     partyNames.add(currentParty);
@@ -78,7 +82,6 @@ public class Assignment3 extends JDBCSubmission {
         catch (SQLException e){
             System.out.println("can not close");
         }
-        
             /* 
             find presidentSequence logic        return list of President in that country, in descending order of date of occupying the office, and the name of the party
             that the president belongs to 
@@ -90,26 +93,34 @@ public class Assignment3 extends JDBCSubmission {
 	}
 
     @Override
-    public List<INT> findSimilarParties(INT partyId, Float threshold) {
+    public List<Integer> findSimilarParties(Integer partyId, Float threshold) {
     //Write your code here.
-    List<INT> similarParties= new ArrayList<INT>();
+    List<Integer> similarParties= new ArrayList<Integer>();
     try{
-        PreparedStatement getParties=conn.prepareStatement(
-        " select id,description from party where id= "+
-        INT.toString(partyId)+";");
+        //pick the description
+        PreparedStatement description=connection.prepareStatement(
+        " select description from party where id="+Integer.toString(partyId)+";");
 
-        PreparedStatement comparedParty=conn.prepareStatement(
-            "select description from party where id = "+INT.toString(partyId)+";"
+        PreparedStatement otherParties=connection.prepareStatement(
+            "select id ,description from party where id !="+Integer.toString(partyId)+";"
         );
 
-        ResultSet singleParty=comparedParty.executeQuery();
-        singleParty.next();
-        String comparedDescription=singleParty.getString(1);
-        ResultSet allParties=getParties.executeQuery();
-        while(allParties.next()){
+        ResultSet sample=description.executeQuery();
+        sample.next();
+        String ds=sample.getString(1);
+        
+        ResultSet restParties=otherParties.executeQuery();
+        /*if(allParties!=null){
             String currentDescription=allParties.getString(2);
-            int currentParty=allParties.getInt(1);
+            Integer currentParty=allParties.getInt(1);
             if((similarity(currentDescription,comparedDescription))>=threshold){
+                similarParties.add(currentParty);
+            }
+        }*/
+        while(restParties.next()){
+            String currentDescription=restParties.getString(2);
+            Integer currentParty=restParties.getInt(1);
+            if((similarity(currentDescription,ds))>=threshold){
                 similarParties.add(currentParty);
             }
         }
@@ -117,14 +128,14 @@ public class Assignment3 extends JDBCSubmission {
     catch(SQLException e){
         e.printStackTrace();
     }
-
         return similarParties;
     }
 
+    
     public static void main(String[] args) throws Exception {
    	    //Write code here. 
-        
            System.out.println("Hellow World");
+           
     }
 
 }
