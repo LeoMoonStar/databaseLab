@@ -9,9 +9,9 @@ public abstract class JDBCSubmission {
      * The return class for method electionSequence.
      */
     public static class ElectionResult implements Serializable {
-        public List<Integer> presidents;
+        public List<INT> presidents;
         public List<String> parties;
-        public ElectionResult(List<Integer> presidents, List<String> parties) {
+        public ElectionResult(List<INT> presidents, List<String> parties) {
             this.presidents = presidents;
             this.parties = parties;
         }
@@ -113,7 +113,7 @@ public abstract class JDBCSubmission {
      * @return                  a list of parties with Jaccard similarity of
      *                          descriptions above the given threshold
      */
-    public abstract List<Integer> findSimilarParties(Integer partyId, Float threshold);
+    public abstract List<INT> findSimilarParties(INT partyId, Float threshold);
 
 }
 
