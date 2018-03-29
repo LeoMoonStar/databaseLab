@@ -33,13 +33,25 @@ public class Assignment3 extends JDBCSubmission {
 
     @Override
     public boolean disconnectDB() {
-	    conn.close();
+        try
+        {
+            conn.close();
+        }
+        catch (SQLException e){
+            System.out.println("can not close");
+        }
             return true;
     }
 
     @Override
     public ElectionResult presidentSequence(String countryName) {
-            Statement a1=conn.createStatement();
+           
+        try
+        {Statement a1=conn.createStatement();}
+        catch (SQLException e){
+            System.out.println("can not close");
+        }
+        
             /* 
             find presidentSequence logic        return list of President in that country, in descending order of date of occupying the office, and the name of the party
             that the president belongs to 
