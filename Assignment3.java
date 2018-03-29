@@ -66,7 +66,8 @@ public class Assignment3 extends JDBCSubmission {
                 "order by politician_president.start_date desc;"
                 );
                 ResultSet presidents=presidentStat.executeQuery();
-                While(presidents.next()){
+                while(presidents.next())
+                {
                     int currentPresident =presidents.getInt(1);
                     String currentParty=presidents.getString(2);
                     presidentIds.add(currentPresident);
